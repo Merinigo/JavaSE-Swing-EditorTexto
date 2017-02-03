@@ -14,14 +14,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
@@ -32,15 +35,14 @@ import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.event.MenuListener;
+import javax.swing.undo.UndoManager;
 
 public class TextEditorMain{
 
 	private Font defaultFont;
+	private UndoManager jumDeshacerRehacer;
 	
 	private JFrame frame;
 	private JScrollPane jscrpaneEditor;
@@ -100,7 +102,8 @@ public class TextEditorMain{
 	 * Create the application.
 	 */
 	public TextEditorMain() {
-		initialize();		
+		initialize();	
+		initOtherComponents();
 	}
 
 	/**
@@ -309,6 +312,13 @@ public class TextEditorMain{
 		jbgTamano.add(jmItemTamañoPredeterminado);
 		jmnuTamaño.add(jmItemTamañoPredeterminado);
 	}
+	
+	//Iniciamos otros componentes no visuales
+	private void initOtherComponents(){
+		jumDeshacerRehacer = new UndoManager();
+		jtxtaEditor.getDocument().addUndoableEditListener(jumDeshacerRehacer);
+	}
+		
 	
 	//                    ****************************************COMMON LISTENERS*********
 	//                    *****************************************************************
