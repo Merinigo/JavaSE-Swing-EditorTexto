@@ -1,5 +1,6 @@
 package com.merinigo;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -14,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,11 +28,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -38,10 +38,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.undo.UndoManager;
-import java.awt.Rectangle;
-import java.awt.ComponentOrientation;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class TextEditorMain{
 
@@ -57,6 +53,8 @@ public class TextEditorMain{
 	private JMenuItem jmItemAbrir;
 	private JMenuItem jmItemSalir;
 	private JMenu jmnuEdicion;
+	private JMenuItem jmItemDeshacer;	
+	private JMenuItem jmItemRehacer;
 	private JMenuItem jmItemCortar;
 	private JMenuItem jmItemCopiar;
 	private JMenuItem jmItemPegar;
@@ -77,6 +75,8 @@ public class TextEditorMain{
 	private JButton jbtbarCortar;
 	private JButton jbtbarCopiar;
 	private JButton jbtnbarPegar;
+	private JButton jbtbarDeshacer;
+	private JButton jbtbarRehacer;
 	private JPanel jBarraDeEstado;
 	private JLabel jetbarestPpal;
 
@@ -157,7 +157,7 @@ public class TextEditorMain{
 		jbtbarGuardar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Save.png")));
 		jtbarBarraDeHerr.add(jbtbarGuardar);
 		
-		horizontalStrut = Box.createHorizontalStrut(20);
+		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut.setMaximumSize(new Dimension(5, 32767));
@@ -165,7 +165,7 @@ public class TextEditorMain{
 		
 		jtbarBarraDeHerr.add(new JToolBar.Separator());
 
-		horizontalStrut_1 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		horizontalStrut_1.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_1.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_1.setMaximumSize(new Dimension(5, 32767));
@@ -201,7 +201,7 @@ public class TextEditorMain{
 		jbtnbarPegar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtnbarPegar);
 		
-		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		horizontalStrut_2.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_2.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_2.setMaximumSize(new Dimension(5, 32767));
@@ -209,7 +209,7 @@ public class TextEditorMain{
 		
 		jtbarBarraDeHerr.add(new JToolBar.Separator());
 		
-		horizontalStrut_3 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalStrut_3.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_3.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_3.setMaximumSize(new Dimension(5, 32767));
@@ -463,15 +463,7 @@ public class TextEditorMain{
 			}
 		}
 	};
-	private JMenuItem jmItemRehacer;
-	private JMenuItem jmItemDeshacer;
-	private JSeparator separator_1;
-	private JButton jbtbarDeshacer;
-	private JButton jbtbarRehacer;
-	private Component horizontalStrut;
-	private Component horizontalStrut_1;
-	private Component horizontalStrut_2;
-	private Component horizontalStrut_3;
+
 	
 	
 	
