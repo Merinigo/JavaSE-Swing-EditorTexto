@@ -32,41 +32,48 @@ import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.MenuListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 public class TextEditorMain{
 
 	private Font defaultFont;
 	
 	private JFrame frame;
-	private JMenuBar jmbarBarraDeMenus;
-	private JMenu jmnuArchivo;
-	private JToolBar jtbarBarraDeHerr;
-	private JMenuItem jmItemSalir;
-	private JButton jbtbarAbrir;
-	private JButton jbtbarGuardar;
-	private JPanel jBarraDeEstado;
-	private JLabel jetbarestPpal;
 	private JScrollPane jscrpaneEditor;
 	private JTextArea jtxtaEditor;
+	private JMenuBar jmbarBarraDeMenus;
+	private JMenu jmnuArchivo;
+	private JMenuItem jmItemGuardar;
+	private JMenuItem jmItemAbrir;
+	private JMenuItem jmItemSalir;
 	private JMenu jmnuEdicion;
-	private JMenu jmnuOpciones;
+	private JMenuItem jmItemCortar;
 	private JMenuItem jmItemCopiar;
 	private JMenuItem jmItemPegar;
-	private JMenuItem jmItemCortar;
+	private JMenu jmnuOpciones;
 	private JMenu jmnuFuente;
-	private JMenuItem jmItemArial;
-	private JMenuItem jmItemFuentePredeterminada;
-	private JMenuItem jmItemCourierNew;
+	private ButtonGroup jbgFuente;
+	private JCheckBoxMenuItem jmItemCourierNew;
+	private JCheckBoxMenuItem jmItemArial;
+	private JCheckBoxMenuItem jmItemFuentePredeterminada;
 	private JMenu jmnuTamaño;
-	private JMenuItem jmItem24;
-	private JMenuItem jmItemTamañoPredeterminado;
-	private JMenuItem jmItem16;
+	private ButtonGroup jbgTamano;
+	private JRadioButtonMenuItem jmItem16;
+	private JRadioButtonMenuItem jmItem24;
+	private JRadioButtonMenuItem jmItemTamañoPredeterminado;
+	private JToolBar jtbarBarraDeHerr;
+	private JButton jbtbarAbrir;
+	private JButton jbtbarGuardar;
+	private JSeparator separator;
 	private JButton jbtbarCortar;
 	private JButton jbtbarCopiar;
 	private JButton jbtnbarPegar;
-	private JSeparator separator;
-	private JMenuItem jmItemGuardar;
-	private JMenuItem jmItemAbrir;
+	private JPanel jBarraDeEstado;
+	private JLabel jetbarestPpal;
 
 	/**
 	 * Launch the application.
@@ -100,7 +107,7 @@ public class TextEditorMain{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame();																			//JFrame 
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -116,14 +123,15 @@ public class TextEditorMain{
 		});
 		frame.setBounds(100, 100, 500, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		
-		jtbarBarraDeHerr = new JToolBar();
+		jtbarBarraDeHerr = new JToolBar();																//Toolbar																			
 		jtbarBarraDeHerr.setFloatable(false);
 		jtbarBarraDeHerr.setBounds(0, 0, 484, 20);
 		frame.getContentPane().add(jtbarBarraDeHerr);
 		
-		jbtbarAbrir = new JButton("");		
+		jbtbarAbrir = new JButton("");																	//Toolbar_Abrir
 		jbtbarAbrir.addActionListener(menuItemActionListener);
 		jbtbarAbrir.addChangeListener(menuItemChangeListener);
 		jbtbarAbrir.setFocusable(false);
@@ -133,7 +141,7 @@ public class TextEditorMain{
 		jbtbarAbrir.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Open.png")));
 		jtbarBarraDeHerr.add(jbtbarAbrir);
 		
-		jbtbarGuardar = new JButton("");
+		jbtbarGuardar = new JButton("");																//Toolbar_Guardar
 		jbtbarGuardar.addChangeListener(menuItemChangeListener);
 		jbtbarGuardar.addActionListener(menuItemActionListener);
 		jbtbarGuardar.setFocusable(false);
@@ -148,7 +156,7 @@ public class TextEditorMain{
 		separator.setOrientation(SwingConstants.VERTICAL);
 		jtbarBarraDeHerr.add(separator);
 		
-		jbtbarCortar = new JButton("");
+		jbtbarCortar = new JButton("");																	//Toolbar_Cortar
 		jbtbarCortar.addChangeListener(menuItemChangeListener);
 		jbtbarCortar.addActionListener(menuItemActionListener);
 		jbtbarCortar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Cut.png")));
@@ -158,7 +166,7 @@ public class TextEditorMain{
 		jbtbarCortar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtbarCortar);
 		
-		jbtbarCopiar = new JButton("");
+		jbtbarCopiar = new JButton("");																	//Toolbar_Copiar
 		jbtbarCopiar.addChangeListener(menuItemChangeListener);
 		jbtbarCopiar.addActionListener(menuItemActionListener);
 		jbtbarCopiar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Copy.png")));
@@ -168,7 +176,7 @@ public class TextEditorMain{
 		jbtbarCopiar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtbarCopiar);
 		
-		jbtnbarPegar = new JButton("");
+		jbtnbarPegar = new JButton("");																	//Toolbar_Pegar
 		jbtnbarPegar.addChangeListener(menuItemChangeListener);
 		jbtnbarPegar.addActionListener(menuItemActionListener);
 		jbtnbarPegar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Paste.png")));
@@ -178,7 +186,7 @@ public class TextEditorMain{
 		jbtnbarPegar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtnbarPegar);
 		
-		jBarraDeEstado = new JPanel();
+		jBarraDeEstado = new JPanel();																	//StateBar
 		FlowLayout fl_jBarraDeEstado = (FlowLayout) jBarraDeEstado.getLayout();
 		fl_jBarraDeEstado.setVgap(0);
 		fl_jBarraDeEstado.setAlignment(FlowLayout.LEFT);
@@ -186,105 +194,120 @@ public class TextEditorMain{
 		jBarraDeEstado.setBounds(0, 216, 485, 25);
 		frame.getContentPane().add(jBarraDeEstado);
 		
-		jetbarestPpal = new JLabel("");
+		jetbarestPpal = new JLabel("");																	//StateBar_Label
 		jetbarestPpal.setPreferredSize(new Dimension(470, 20));
 		jBarraDeEstado.add(jetbarestPpal);
 		
-		jscrpaneEditor = new JScrollPane();
-		jtxtaEditor = new JTextArea();
+		jscrpaneEditor = new JScrollPane();																//ScrollPane
+		jtxtaEditor = new JTextArea();																	//TextArea
 //		jtxtaEditor.setLineWrap(true);
 //		jtxtaEditor.setWrapStyleWord(true);
 		jscrpaneEditor.setViewportView(jtxtaEditor);
 		jscrpaneEditor.setBounds(0, 20, 484, 198);
 		frame.getContentPane().add(jscrpaneEditor);
 		
-		jmbarBarraDeMenus = new JMenuBar();
+		jmbarBarraDeMenus = new JMenuBar();																//MenuBar																	
 		frame.setJMenuBar(jmbarBarraDeMenus);
 		
-		jmnuArchivo = new JMenu("Archivo");
+		jmnuArchivo = new JMenu("Archivo");																//MenuBar_Archivo
 		jmnuArchivo.setMnemonic('A');
 		jmbarBarraDeMenus.add(jmnuArchivo);
 		
-		jmItemSalir = new JMenuItem("Salir");
+		jmItemSalir = new JMenuItem("Salir");															//MenuBar_Archivo_Salir
 		jmItemSalir.addChangeListener(menuItemChangeListener);	
 		jmItemSalir.setMnemonic('S');
 		jmItemSalir.addActionListener(menuItemActionListener);
 		
-		jmItemAbrir = new JMenuItem("Abrir");
+		jmItemAbrir = new JMenuItem("Abrir");															//MenuBar_Archivo_Abrir
 		jmItemAbrir.addActionListener(menuItemActionListener);
 		jmItemAbrir.addChangeListener(menuItemChangeListener);
 		jmnuArchivo.add(jmItemAbrir);
 		
-		jmItemGuardar = new JMenuItem("Guardar");
+		jmItemGuardar = new JMenuItem("Guardar");														//MenuBar_Archivo_Guardar															
 		jmItemGuardar.addActionListener(menuItemActionListener);
 		jmItemGuardar.addChangeListener(menuItemChangeListener);
 		jmItemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		jmnuArchivo.add(jmItemGuardar);
 		jmnuArchivo.add(jmItemSalir);
 		
-		jmnuEdicion = new JMenu("Edicion");
+		jmnuEdicion = new JMenu("Edicion");																//MenuBar_Edicion
+		jmnuEdicion.addMenuListener(new MenuListener() {
+			public void menuSelected(MenuEvent arg0) {
+				boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
+				jmItemCopiar.setEnabled(hayTextoSeleccionado);
+				jmItemCortar.setEnabled(hayTextoSeleccionado);
+			}
+			public void menuCanceled(MenuEvent arg0) {}
+			public void menuDeselected(MenuEvent arg0) {}
+		});
 		jmbarBarraDeMenus.add(jmnuEdicion);
 		
-		jmItemCortar = new JMenuItem("Cortar");
+		jmItemCortar = new JMenuItem("Cortar");															//MenuBar_Edicion_Cortar
 		jmItemCortar.addActionListener(menuItemActionListener);
 		jmItemCortar.addChangeListener(menuItemChangeListener);
 		jmItemCortar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCortar);
 		
-		jmItemCopiar = new JMenuItem("Copiar");
+		jmItemCopiar = new JMenuItem("Copiar");															//MenuBar_Edicion_Copiar																
 		jmItemCopiar.addActionListener(menuItemActionListener);
 		jmItemCopiar.addChangeListener(menuItemChangeListener);
 		jmItemCopiar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCopiar);
 		
-		jmItemPegar = new JMenuItem("Pegar");
+		jmItemPegar = new JMenuItem("Pegar");															//MenuBar_Edicion_Pegar
 		jmItemPegar.addActionListener(menuItemActionListener);
 		jmItemPegar.addChangeListener(menuItemChangeListener);
 		jmItemPegar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemPegar);
 		
-		jmnuOpciones = new JMenu("Opciones");
+		jmnuOpciones = new JMenu("Opciones");															//MenuBar_Opciones
 		jmbarBarraDeMenus.add(jmnuOpciones);
 		
-		jmnuFuente = new JMenu("Fuente");
+		jmnuFuente = new JMenu("Fuente");																//MenuBar_Opciones_Fuente
 		jmnuFuente.addChangeListener(menuItemChangeListener);
 		jmnuFuente.setMnemonic('F');
 		jmnuOpciones.add(jmnuFuente);
 		
-		jmItemCourierNew = new JMenuItem("Courier New");
-		jmItemCourierNew.addActionListener(menuItemActionListener);
+		jbgFuente = new ButtonGroup();
+		
+		jmItemCourierNew = new JCheckBoxMenuItem("Courier New");										//MenuBar_Opciones_Fuente_CourierNew
+		jbgFuente.add(jmItemCourierNew);
 		jmnuFuente.add(jmItemCourierNew);
 		
-		jmItemArial = new JMenuItem("Arial");
-		jmItemArial.addActionListener(menuItemActionListener);
+		jmItemArial = new JCheckBoxMenuItem("Arial");													//MenuBar_Opciones_Fuente_Arial
+		jbgFuente.add(jmItemArial);
 		jmnuFuente.add(jmItemArial);
 		
-		jmItemFuentePredeterminada = new JMenuItem("Predeterminada");
-		jmItemFuentePredeterminada.addActionListener(menuItemActionListener);
+		jmItemFuentePredeterminada = new JCheckBoxMenuItem("Predeterminada");							//MenuBar_Opciones_Fuente_Pred
+		jbgFuente.add(jmItemFuentePredeterminada);
+		jmItemFuentePredeterminada.setSelected(true);
 		jmnuFuente.add(jmItemFuentePredeterminada);
-		
-		jmnuTamaño = new JMenu("Tama\u00F1o");
+				
+		jmnuTamaño = new JMenu("Tama\u00F1o");															//MenuBar_Opciones_Tamaño
 		jmnuTamaño.addChangeListener(menuItemChangeListener);
 		jmnuTamaño.setMnemonic('T');
 		jmnuOpciones.add(jmnuTamaño);
 		
-		jmItem16 = new JMenuItem("16");
-		jmItem16.addActionListener(menuItemActionListener);
+		jbgTamano = new ButtonGroup();
+		
+		jmItem16 = new JRadioButtonMenuItem("16");														//MenuBar_Opciones_Tamaño_16
+		jbgTamano.add(jmItem16);
 		jmnuTamaño.add(jmItem16);
 		
-		jmItem24 = new JMenuItem("24");
-		jmItem24.addActionListener(menuItemActionListener);
+		jmItem24 = new JRadioButtonMenuItem("24");														//MenuBar_Opciones_Tamaño_24
+		jbgTamano.add(jmItem24);
 		jmnuTamaño.add(jmItem24);
 		
-		jmItemTamañoPredeterminado = new JMenuItem("Predeterminado");
-		jmItemTamañoPredeterminado.addActionListener(menuItemActionListener);
+		jmItemTamañoPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tamaño_Pred
+		jmItemTamañoPredeterminado.setSelected(true);
+		jbgTamano.add(jmItemTamañoPredeterminado);
 		jmnuTamaño.add(jmItemTamañoPredeterminado);
 	}
 	
 	//                    ****************************************COMMON LISTENERS*********
 	//                    *****************************************************************
 	
-	//*************************************CHANGELISTENER items menu and toolbar
+	//-------------------------CHANGELISTENER items menu and toolbar
 	ChangeListener menuItemChangeListener = new ChangeListener() {		
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -318,7 +341,7 @@ public class TextEditorMain{
 		}
 	};	
 	
-	//*************************************ACTIONLISTERNER items menu and toolbar
+	//-------------------------ACTIONLISTERNER items menu and toolbar
 	ActionListener menuItemActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -363,6 +386,8 @@ public class TextEditorMain{
 		}
 	};
 	
+	
+	
 
 	//                    *****************************************EVENT HANDLERS**********
 	//                    *****************************************************************
@@ -380,7 +405,7 @@ public class TextEditorMain{
 		defaultFont = jtxtaEditor.getFont();
 	}	
 	
-	//**************************ACTIONPERFORMED items menu and toolbar
+	//-------------------------ACTIONPERFORMED items menu and toolbar
 	private void jmItemSalirActionPerformed(ActionEvent evt){
 		System.exit(0);
 	}
@@ -430,7 +455,7 @@ public class TextEditorMain{
 	}
 	
 	
-	//**************************STATECHANGED items menu and toolbar
+	//-------------------------STATECHANGED items menu and toolbar
 	private void jmItemSalirStateChanged(ChangeEvent evt){	
 		setTextInStateBarDuringHover("Cierra la aplicacion");
 	}
