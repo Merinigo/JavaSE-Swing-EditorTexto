@@ -1,36 +1,42 @@
 package com.merinigo;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-import javax.swing.UIManager;
-import javax.swing.JToolBar;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.Insets;
-import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
-import javax.swing.JLabel;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class TextEditorMain {
+public class TextEditorMain implements ClipboardOwner{
 
 	private JFrame frame;
 	private JMenuBar jmbarBarraDeMenus;
@@ -45,6 +51,10 @@ public class TextEditorMain {
 	private JButton jbtbarGuardar;
 	private JPanel jBarraDeEstado;
 	private JLabel jetbarestPpal;
+	private JScrollPane jscrpaneEditor;
+	private JTextArea jtxtaEditor;
+	private Clipboard portapapeles;
+	
 
 	/**
 	 * Launch the application.
@@ -72,6 +82,7 @@ public class TextEditorMain {
 	 */
 	public TextEditorMain() {
 		initialize();
+		portapapeles = Toolkit.getDefaultToolkit().getSystemClipboard();
 	}
 
 	/**
@@ -79,8 +90,14 @@ public class TextEditorMain {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				formWindowOpened(e);
+			}
+		});
 		frame.setMinimumSize(new Dimension(200, 200));
-		frame.addComponentListener(new ComponentAdapter() {
+		frame.addComponentListener(new ComponentAdapter() {			
 			@Override
 			public void componentResized(ComponentEvent e) {
 				formComponentResized(e);
@@ -121,6 +138,14 @@ public class TextEditorMain {
 		jetbarestPpal = new JLabel("");
 		jetbarestPpal.setPreferredSize(new Dimension(470, 20));
 		jBarraDeEstado.add(jetbarestPpal);
+		
+		jscrpaneEditor = new JScrollPane();
+		jtxtaEditor = new JTextArea();		
+//		jtxtaEditor.setLineWrap(true);
+//		jtxtaEditor.setWrapStyleWord(true);
+		jscrpaneEditor.setViewportView(jtxtaEditor);
+		jscrpaneEditor.setBounds(0, 20, 484, 198);
+		frame.getContentPane().add(jscrpaneEditor);
 		
 		jmbarBarraDeMenus = new JMenuBar();
 		frame.setJMenuBar(jmbarBarraDeMenus);
@@ -174,13 +199,8 @@ public class TextEditorMain {
 				jmItemSalirStateChanged(e);
 			}			
 		}
-	};
-	
-	
-	
-	
-	
-	
+	};	
+
 	//-----------EVENT HANDLERS
 	
 	//Menu Archivo Salir
@@ -189,9 +209,15 @@ public class TextEditorMain {
 	}
 	
 	//Cambio de tamaño de ventana, cambiamos tamaño y posicion de barra de estado
-	private void formComponentResized(ComponentEvent evt){
-		jBarraDeEstado.setBounds(0, frame.getSize().height-83, frame.getSize().width-15, 24);
+	private void formComponentResized(ComponentEvent evt){		
+		jBarraDeEstado.setBounds(0, frame.getSize().height-83, frame.getSize().width-14, 24);
+		jscrpaneEditor.setSize(new Dimension(frame.getSize().width-15, frame.getSize().height-101));
 	}
+	
+	//Al abrir la ventana poner el foco en el area de texto
+	private void formWindowOpened(WindowEvent evt){
+		jtxtaEditor.requestFocus();
+	}	
 	
 	//Cambios en la barra de estado al cuando cambia el estado del menu salir
 	private void jmItemSalirStateChanged(ChangeEvent evt){		
@@ -207,7 +233,7 @@ public class TextEditorMain {
 			jetbarestPpal.setText("Abrir un fichero");
 		}else{			
 			jetbarestPpal.setText("Listo");
-		}
+		}		
 	}
 	
 	private void jmItemGuardarStateChanged(ChangeEvent evt){		
@@ -217,5 +243,36 @@ public class TextEditorMain {
 			jetbarestPpal.setText("Listo");
 		}
 	}
+	
+	
+	//**********OTHER FUNCTIONS************
+	
+	//Sobrescribe clase Clipboard
+	@Override
+	public void lostOwnership(Clipboard clipboard, Transferable contents) {
+	}
+	
+	//Configurar el portapapeles para copiar y pegar
+	private void copiar(ActionEvent evt){
+		String textToCopy = jtxtaEditor.getSelectedText();
+		Transferable objtrans = new StringSelection(textToCopy);
+		portapapeles.setContents(objtrans, this);
+	}
+	
+	private void pegar(ActionEvent evt){
+		Transferable objTrans = portapapeles.getContents(this);
+		if(portapapeles != null){
+			try {
+				String textToPaste;
+				textToPaste = (String) objTrans.getTransferData(DataFlavor.stringFlavor);
+				jtxtaEditor.replaceSelection(textToPaste);
+			} catch (Exception e) {			
+				e.printStackTrace();
+				System.out.println("EXCEPCION IGNORADA");
+			}
+		}
+	}
+	
+	
 	
 }
