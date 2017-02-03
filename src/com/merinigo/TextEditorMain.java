@@ -38,6 +38,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.undo.UndoManager;
+import java.awt.Rectangle;
+import java.awt.ComponentOrientation;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class TextEditorMain{
 
@@ -70,7 +74,6 @@ public class TextEditorMain{
 	private JToolBar jtbarBarraDeHerr;
 	private JButton jbtbarAbrir;
 	private JButton jbtbarGuardar;
-	private JSeparator separator;
 	private JButton jbtbarCortar;
 	private JButton jbtbarCopiar;
 	private JButton jbtnbarPegar;
@@ -154,14 +157,23 @@ public class TextEditorMain{
 		jbtbarGuardar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Save.png")));
 		jtbarBarraDeHerr.add(jbtbarGuardar);
 		
-		separator = new JSeparator();
-		separator.setMaximumSize(new Dimension(5, 32767));
-		separator.setOrientation(SwingConstants.VERTICAL);
-		jtbarBarraDeHerr.add(separator);
+		horizontalStrut = Box.createHorizontalStrut(20);
+		horizontalStrut.setPreferredSize(new Dimension(5, 0));
+		horizontalStrut.setMinimumSize(new Dimension(5, 0));
+		horizontalStrut.setMaximumSize(new Dimension(5, 32767));
+		jtbarBarraDeHerr.add(horizontalStrut);
+		
+		jtbarBarraDeHerr.add(new JToolBar.Separator());
+
+		horizontalStrut_1 = Box.createHorizontalStrut(20);
+		horizontalStrut_1.setPreferredSize(new Dimension(5, 0));
+		horizontalStrut_1.setMinimumSize(new Dimension(5, 0));
+		horizontalStrut_1.setMaximumSize(new Dimension(5, 32767));
+		jtbarBarraDeHerr.add(horizontalStrut_1);
 		
 		jbtbarCortar = new JButton("");																	//Toolbar_Cortar
 		jbtbarCortar.addChangeListener(menuItemChangeListener);
-		jbtbarCortar.addActionListener(menuItemActionListener);
+		jbtbarCortar.addActionListener(menuItemActionListener);		
 		jbtbarCortar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Cut.png")));
 		jbtbarCortar.setToolTipText("Cortar");
 		jbtbarCortar.setMargin(new Insets(0, 0, 0, 0));
@@ -188,6 +200,38 @@ public class TextEditorMain{
 		jbtnbarPegar.setFocusable(false);
 		jbtnbarPegar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtnbarPegar);
+		
+		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		horizontalStrut_2.setPreferredSize(new Dimension(5, 0));
+		horizontalStrut_2.setMinimumSize(new Dimension(5, 0));
+		horizontalStrut_2.setMaximumSize(new Dimension(5, 32767));
+		jtbarBarraDeHerr.add(horizontalStrut_2);
+		
+		jtbarBarraDeHerr.add(new JToolBar.Separator());
+		
+		horizontalStrut_3 = Box.createHorizontalStrut(20);
+		horizontalStrut_3.setPreferredSize(new Dimension(5, 0));
+		horizontalStrut_3.setMinimumSize(new Dimension(5, 0));
+		horizontalStrut_3.setMaximumSize(new Dimension(5, 32767));
+		jtbarBarraDeHerr.add(horizontalStrut_3);
+		
+		jbtbarDeshacer = new JButton("");																//Toolbar_Deshacer
+		jbtbarDeshacer.addActionListener(menuItemActionListener);
+		jbtbarDeshacer.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Undo.png")));
+		jbtbarDeshacer.setToolTipText("Deshacer");
+		jbtbarDeshacer.setMargin(new Insets(0, 0, 0, 0));
+		jbtbarDeshacer.setFocusable(false);
+		jbtbarDeshacer.setFocusPainted(false);
+		jtbarBarraDeHerr.add(jbtbarDeshacer);
+		
+		jbtbarRehacer = new JButton("");																//Toolbar_Rehacer
+		jbtbarRehacer.addActionListener(menuItemActionListener);
+		jbtbarRehacer.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Redo.png")));
+		jbtbarRehacer.setToolTipText("Rehacer");
+		jbtbarRehacer.setMargin(new Insets(0, 0, 0, 0));
+		jbtbarRehacer.setFocusable(false);
+		jbtbarRehacer.setFocusPainted(false);
+		jtbarBarraDeHerr.add(jbtbarRehacer);
 		
 		jBarraDeEstado = new JPanel();																	//StateBar
 		FlowLayout fl_jBarraDeEstado = (FlowLayout) jBarraDeEstado.getLayout();
@@ -244,6 +288,18 @@ public class TextEditorMain{
 			public void menuDeselected(MenuEvent arg0) {}
 		});
 		jmbarBarraDeMenus.add(jmnuEdicion);
+		
+		jmItemDeshacer = new JMenuItem("Deshacer");														//MenuBar_Edicion_Deshacer
+		jmItemDeshacer.addActionListener(menuItemActionListener);
+		jmItemDeshacer.setMnemonic('D');
+		jmItemDeshacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+		jmnuEdicion.add(jmItemDeshacer);
+		
+		jmItemRehacer = new JMenuItem("Rehacer");														//MenuBar_Edicion_Rehacer
+		jmItemRehacer.addActionListener(menuItemActionListener);
+		jmItemRehacer.setMnemonic('R');
+		jmItemRehacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		jmnuEdicion.add(jmItemRehacer);
 		
 		jmItemCortar = new JMenuItem("Cortar");															//MenuBar_Edicion_Cortar
 		jmItemCortar.addActionListener(menuItemActionListener);
@@ -372,6 +428,12 @@ public class TextEditorMain{
 			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){	//Guardar
 				jmItemGuardarActionPerformed(e);
 			}			
+			if(eventItem == jmItemDeshacer||eventItem == jbtbarDeshacer){	//Deshacer
+				jmItemDeshacerActionPerformed(e);
+			}	
+			if(eventItem == jmItemRehacer||eventItem == jbtbarRehacer){		//Rehacer
+				jmItemRehacerActionPerformed(e);
+			}	
 			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){		//Cortar
 				jmItemCortarActionPerformed(e);
 			}			
@@ -401,6 +463,15 @@ public class TextEditorMain{
 			}
 		}
 	};
+	private JMenuItem jmItemRehacer;
+	private JMenuItem jmItemDeshacer;
+	private JSeparator separator_1;
+	private JButton jbtbarDeshacer;
+	private JButton jbtbarRehacer;
+	private Component horizontalStrut;
+	private Component horizontalStrut_1;
+	private Component horizontalStrut_2;
+	private Component horizontalStrut_3;
 	
 	
 	
@@ -432,6 +503,18 @@ public class TextEditorMain{
 	
 	private void jmItemGuardarActionPerformed(ActionEvent evt){
 		System.out.println("SIN IMPLEMENTAR");
+	}
+	
+	private void jmItemDeshacerActionPerformed(ActionEvent evt){
+		if(jumDeshacerRehacer.canUndo()){
+			jumDeshacerRehacer.undo();
+		}
+	}
+	
+	private void jmItemRehacerActionPerformed(ActionEvent evt){
+		if(jumDeshacerRehacer.canRedo()){
+			jumDeshacerRehacer.redo();;
+		}
 	}
 	
 	private void jmItemCortarActionPerformed(ActionEvent evt){
