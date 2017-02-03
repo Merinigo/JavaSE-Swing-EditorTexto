@@ -3,6 +3,7 @@ package com.merinigo;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,8 @@ import javax.swing.event.ChangeListener;
 
 public class TextEditorMain{
 
+	private Font defaultFont;
+	
 	private JFrame frame;
 	private JMenuBar jmbarBarraDeMenus;
 	private JMenu jmnuArchivo;
@@ -52,11 +55,11 @@ public class TextEditorMain{
 	private JMenuItem jmItemCortar;
 	private JMenu jmnuFuente;
 	private JMenuItem jmItemArial;
-	private JMenuItem jmItemFPredeterminada;
+	private JMenuItem jmItemFuentePredeterminada;
 	private JMenuItem jmItemCourierNew;
 	private JMenu jmnuTamaño;
 	private JMenuItem jmItem24;
-	private JMenuItem jmItemTPredeterminado;
+	private JMenuItem jmItemTamañoPredeterminado;
 	private JMenuItem jmItem16;
 	private JButton jbtbarCortar;
 	private JButton jbtbarCopiar;
@@ -121,7 +124,7 @@ public class TextEditorMain{
 		frame.getContentPane().add(jtbarBarraDeHerr);
 		
 		jbtbarAbrir = new JButton("");		
-		jbtbarAbrir.addActionListener(menuBtnActionListener);
+		jbtbarAbrir.addActionListener(menuItemActionListener);
 		jbtbarAbrir.addChangeListener(menuItemChangeListener);
 		jbtbarAbrir.setFocusable(false);
 		jbtbarAbrir.setFocusPainted(false);
@@ -132,7 +135,7 @@ public class TextEditorMain{
 		
 		jbtbarGuardar = new JButton("");
 		jbtbarGuardar.addChangeListener(menuItemChangeListener);
-		jbtbarGuardar.addActionListener(menuBtnActionListener);
+		jbtbarGuardar.addActionListener(menuItemActionListener);
 		jbtbarGuardar.setFocusable(false);
 		jbtbarGuardar.setFocusPainted(false);
 		jbtbarGuardar.setToolTipText("Guardar");
@@ -147,7 +150,7 @@ public class TextEditorMain{
 		
 		jbtbarCortar = new JButton("");
 		jbtbarCortar.addChangeListener(menuItemChangeListener);
-		jbtbarCortar.addActionListener(menuBtnActionListener);
+		jbtbarCortar.addActionListener(menuItemActionListener);
 		jbtbarCortar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Cut.png")));
 		jbtbarCortar.setToolTipText("Cortar");
 		jbtbarCortar.setMargin(new Insets(0, 0, 0, 0));
@@ -157,7 +160,7 @@ public class TextEditorMain{
 		
 		jbtbarCopiar = new JButton("");
 		jbtbarCopiar.addChangeListener(menuItemChangeListener);
-		jbtbarCopiar.addActionListener(menuBtnActionListener);
+		jbtbarCopiar.addActionListener(menuItemActionListener);
 		jbtbarCopiar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Copy.png")));
 		jbtbarCopiar.setToolTipText("Copiar");
 		jbtbarCopiar.setMargin(new Insets(0, 0, 0, 0));
@@ -167,7 +170,7 @@ public class TextEditorMain{
 		
 		jbtnbarPegar = new JButton("");
 		jbtnbarPegar.addChangeListener(menuItemChangeListener);
-		jbtnbarPegar.addActionListener(menuBtnActionListener);
+		jbtnbarPegar.addActionListener(menuItemActionListener);
 		jbtnbarPegar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Paste.png")));
 		jbtnbarPegar.setToolTipText("Pegar");
 		jbtnbarPegar.setMargin(new Insets(0, 0, 0, 0));
@@ -205,15 +208,15 @@ public class TextEditorMain{
 		jmItemSalir = new JMenuItem("Salir");
 		jmItemSalir.addChangeListener(menuItemChangeListener);	
 		jmItemSalir.setMnemonic('S');
-		jmItemSalir.addActionListener(menuBtnActionListener);
+		jmItemSalir.addActionListener(menuItemActionListener);
 		
 		jmItemAbrir = new JMenuItem("Abrir");
-		jmItemAbrir.addActionListener(menuBtnActionListener);
+		jmItemAbrir.addActionListener(menuItemActionListener);
 		jmItemAbrir.addChangeListener(menuItemChangeListener);
 		jmnuArchivo.add(jmItemAbrir);
 		
 		jmItemGuardar = new JMenuItem("Guardar");
-		jmItemGuardar.addActionListener(menuBtnActionListener);
+		jmItemGuardar.addActionListener(menuItemActionListener);
 		jmItemGuardar.addChangeListener(menuItemChangeListener);
 		jmItemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		jmnuArchivo.add(jmItemGuardar);
@@ -223,19 +226,19 @@ public class TextEditorMain{
 		jmbarBarraDeMenus.add(jmnuEdicion);
 		
 		jmItemCortar = new JMenuItem("Cortar");
-		jmItemCortar.addActionListener(menuBtnActionListener);
+		jmItemCortar.addActionListener(menuItemActionListener);
 		jmItemCortar.addChangeListener(menuItemChangeListener);
 		jmItemCortar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCortar);
 		
 		jmItemCopiar = new JMenuItem("Copiar");
-		jmItemCopiar.addActionListener(menuBtnActionListener);
+		jmItemCopiar.addActionListener(menuItemActionListener);
 		jmItemCopiar.addChangeListener(menuItemChangeListener);
 		jmItemCopiar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCopiar);
 		
 		jmItemPegar = new JMenuItem("Pegar");
-		jmItemPegar.addActionListener(menuBtnActionListener);
+		jmItemPegar.addActionListener(menuItemActionListener);
 		jmItemPegar.addChangeListener(menuItemChangeListener);
 		jmItemPegar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemPegar);
@@ -244,30 +247,38 @@ public class TextEditorMain{
 		jmbarBarraDeMenus.add(jmnuOpciones);
 		
 		jmnuFuente = new JMenu("Fuente");
+		jmnuFuente.addChangeListener(menuItemChangeListener);
 		jmnuFuente.setMnemonic('F');
 		jmnuOpciones.add(jmnuFuente);
 		
 		jmItemCourierNew = new JMenuItem("Courier New");
+		jmItemCourierNew.addActionListener(menuItemActionListener);
 		jmnuFuente.add(jmItemCourierNew);
 		
 		jmItemArial = new JMenuItem("Arial");
+		jmItemArial.addActionListener(menuItemActionListener);
 		jmnuFuente.add(jmItemArial);
 		
-		jmItemFPredeterminada = new JMenuItem("Predeterminada");
-		jmnuFuente.add(jmItemFPredeterminada);
+		jmItemFuentePredeterminada = new JMenuItem("Predeterminada");
+		jmItemFuentePredeterminada.addActionListener(menuItemActionListener);
+		jmnuFuente.add(jmItemFuentePredeterminada);
 		
 		jmnuTamaño = new JMenu("Tama\u00F1o");
+		jmnuTamaño.addChangeListener(menuItemChangeListener);
 		jmnuTamaño.setMnemonic('T');
 		jmnuOpciones.add(jmnuTamaño);
 		
 		jmItem16 = new JMenuItem("16");
+		jmItem16.addActionListener(menuItemActionListener);
 		jmnuTamaño.add(jmItem16);
 		
 		jmItem24 = new JMenuItem("24");
+		jmItem24.addActionListener(menuItemActionListener);
 		jmnuTamaño.add(jmItem24);
 		
-		jmItemTPredeterminado = new JMenuItem("Predeterminado");
-		jmnuTamaño.add(jmItemTPredeterminado);
+		jmItemTamañoPredeterminado = new JMenuItem("Predeterminado");
+		jmItemTamañoPredeterminado.addActionListener(menuItemActionListener);
+		jmnuTamaño.add(jmItemTamañoPredeterminado);
 	}
 	
 	//                    ****************************************COMMON LISTENERS*********
@@ -282,26 +293,33 @@ public class TextEditorMain{
 			if(eventItem == jmItemSalir){
 				jmItemSalirStateChanged(e);
 			}			
-			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){				
+			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){		//Abrir			
 				jmItemAbrirStateChanged(e);
 			}
-			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){
+			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){	//Guardar
 				jmItemGuardarStateChanged(e);
 			}			
-			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){
+			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){		//Cortar
 				jmItemCortarStateChanged(e);
 			}			
-			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){
+			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){		//Copiar
 				jmItemCopiarStateChanged(e);
 			}			
-			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){				
+			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){		//Pegar
 				jmItemPegarStateChanged(e);
 			}
+			if(eventItem == jmnuFuente){									//Fuente
+				jmItemFuenteStateChanged(e);
+			}
+			if(eventItem == jmnuTamaño){									//Tamaño
+				jmItemTamañoStateChanged(e);
+			}
+			
 		}
 	};	
 	
 	//*************************************ACTIONLISTERNER items menu and toolbar
-	ActionListener menuBtnActionListener = new ActionListener() {
+	ActionListener menuItemActionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object eventItem = e.getSource();
@@ -309,26 +327,42 @@ public class TextEditorMain{
 			if(eventItem == jmItemSalir){
 				jmItemSalirActionPerformed(e);
 			}			
-			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){				
+			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){		//Abrir				
 				jmItemAbrirActionPerformed(e);
 			}
-			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){
+			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){	//Guardar
 				jmItemGuardarActionPerformed(e);
 			}			
-			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){
+			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){		//Cortar
 				jmItemCortarActionPerformed(e);
 			}			
-			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){
+			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){		//Copiar
 				jmItemCopiarActionPerformed(e);
 			}			
-			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){				
+			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){		//Pegar 				
 				jmItemPegarActionPerformed(e);
+			}
+			if(eventItem == jmItemCourierNew){								//CourierNew
+				jmItemCourierNewActionPerformed(e);
+			}
+			if(eventItem == jmItemArial){									//Arial
+				jmItemArialActionPerformed(e);
+			}
+			if(eventItem == jmItemFuentePredeterminada){					//FuentePredeterminada
+				jmItemPredeterminadaActionPerformed(e);
+			}
+			if(eventItem == jmItem16){										//Tamaño16
+				jmItemTamaño16ActionPerformed(e);
+			}
+			if(eventItem == jmItem24){										//Tamaño24
+				jmItemTamaño24ActionPerformed(e);
+			}
+			if(eventItem == jmItemTamañoPredeterminado){					//TamañoPredeterminado
+				jmItemTamañoPredeterminadoActionPerformed(e);
 			}
 		}
 	};
 	
-
-
 
 	//                    *****************************************EVENT HANDLERS**********
 	//                    *****************************************************************
@@ -343,6 +377,7 @@ public class TextEditorMain{
 	//Al abrir la ventana poner el foco en el area de texto
 	private void formWindowOpened(WindowEvent evt){
 		jtxtaEditor.requestFocus();
+		defaultFont = jtxtaEditor.getFont();
 	}	
 	
 	//**************************ACTIONPERFORMED items menu and toolbar
@@ -369,57 +404,87 @@ public class TextEditorMain{
 	private void jmItemPegarActionPerformed(ActionEvent evt){
 		jtxtaEditor.paste();
 	}
-	
-	
-	//**************************STATECHANGED items menu
-	private void jmItemSalirStateChanged(ChangeEvent evt){		
-		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Cierra la aplicacion");
-		}else{			
-			jetbarestPpal.setText("Listo");
-		}
+
+	private void jmItemCourierNewActionPerformed(ActionEvent evt){
+		setFontToEditor("Courier New");
 	}
 	
-	//**************************STATECHANGED items toolbar
-	private void jmItemAbrirStateChanged(ChangeEvent evt){		
-		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Abrir un fichero");
-		}else{			
-			jetbarestPpal.setText("Listo");
-		}
+	private void jmItemArialActionPerformed(ActionEvent evt){
+		setFontToEditor("Arial");
 	}
 	
-	private void jmItemGuardarStateChanged(ChangeEvent evt){		
-		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Guardar un fichero");
-		}else{			
-			jetbarestPpal.setText("Listo");
-		}
+	private void jmItemPredeterminadaActionPerformed(ActionEvent evt){
+		jtxtaEditor.setFont(defaultFont);
+	}
+	
+	private void jmItemTamaño16ActionPerformed(ActionEvent evt){
+		setFontSizeToEditor(16);
+	}
+	
+	private void jmItemTamaño24ActionPerformed(ActionEvent evt){
+		setFontSizeToEditor(24);
+	}
+	
+	private void jmItemTamañoPredeterminadoActionPerformed(ActionEvent evt){
+		setFontSizeToEditor(defaultFont.getSize());
+	}
+	
+	
+	//**************************STATECHANGED items menu and toolbar
+	private void jmItemSalirStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Cierra la aplicacion");
+	}
+	
+	private void jmItemAbrirStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Abrir un fichero");
+	}
+	
+	private void jmItemGuardarStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Guardar un fichero");
 	}
 	
 	private void jmItemCortarStateChanged(ChangeEvent evt){		
-		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Copia y elimina el texto seleccionado");
-		}else{			
-			jetbarestPpal.setText("Listo");
-		}
+		setTextInStateBarDuringHover("Copia y elimina el texto seleccionado");
 	}
 	
 	private void jmItemCopiarStateChanged(ChangeEvent evt){		
+		setTextInStateBarDuringHover("Copia el texto seleccionado");
+	}
+	
+	private void jmItemPegarStateChanged(ChangeEvent evt){
+		setTextInStateBarDuringHover("Pega el texto seleccionado");	
+	}
+	
+	private void jmItemFuenteStateChanged(ChangeEvent evt){
+		setTextInStateBarDuringHover("Cambiar la fuente de texto");
+	}
+
+	private void jmItemTamañoStateChanged(ChangeEvent evt){
+		setTextInStateBarDuringHover("Cambiar el tamaño de la fuente");		
+	}		
+	
+	
+					//********************OTHER FUNCTIONs*******************
+					//******************************************************
+	
+	private void setTextInStateBarDuringHover(String s){
 		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Copia el texto seleccionado");
+			jetbarestPpal.setText(s);
 		}else{			
 			jetbarestPpal.setText("Listo");
 		}
 	}
 	
-	private void jmItemPegarStateChanged(ChangeEvent evt){				
-		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Pega el texto seleccionado");
-		}else{			
-			jetbarestPpal.setText("Listo");
-		}	
+	private void setFontToEditor(String fontName){
+		Font oldFont = jtxtaEditor.getFont();
+		Font newFont = new Font(fontName, oldFont.getStyle(), oldFont.getSize());
+		jtxtaEditor.setFont(newFont);
 	}
-
+	
+	private void setFontSizeToEditor(int size){		
+		Font oldSize = jtxtaEditor.getFont();
+		Font newSize = new Font(oldSize.getFamily(), oldSize.getStyle(), size);
+		jtxtaEditor.setFont(newSize);
+	}
 	
 }
