@@ -271,14 +271,17 @@ public class TextEditorMain{
 		jbgFuente = new ButtonGroup();
 		
 		jmItemCourierNew = new JCheckBoxMenuItem("Courier New");										//MenuBar_Opciones_Fuente_CourierNew
+		jmItemCourierNew.addActionListener(menuItemActionListener);
 		jbgFuente.add(jmItemCourierNew);
 		jmnuFuente.add(jmItemCourierNew);
 		
 		jmItemArial = new JCheckBoxMenuItem("Arial");													//MenuBar_Opciones_Fuente_Arial
+		jmItemArial.addActionListener(menuItemActionListener);
 		jbgFuente.add(jmItemArial);
 		jmnuFuente.add(jmItemArial);
 		
 		jmItemFuentePredeterminada = new JCheckBoxMenuItem("Predeterminada");							//MenuBar_Opciones_Fuente_Pred
+		jmItemFuentePredeterminada.addActionListener(menuItemActionListener);
 		jbgFuente.add(jmItemFuentePredeterminada);
 		jmItemFuentePredeterminada.setSelected(true);
 		jmnuFuente.add(jmItemFuentePredeterminada);
@@ -291,14 +294,17 @@ public class TextEditorMain{
 		jbgTamano = new ButtonGroup();
 		
 		jmItem16 = new JRadioButtonMenuItem("16");														//MenuBar_Opciones_Tamaño_16
+		jmItem16.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem16);
 		jmnuTamaño.add(jmItem16);
 		
 		jmItem24 = new JRadioButtonMenuItem("24");														//MenuBar_Opciones_Tamaño_24
+		jmItem24.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem24);
 		jmnuTamaño.add(jmItem24);
 		
 		jmItemTamañoPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tamaño_Pred
+		jmItemTamañoPredeterminado.addActionListener(menuItemActionListener);
 		jmItemTamañoPredeterminado.setSelected(true);
 		jbgTamano.add(jmItemTamañoPredeterminado);
 		jmnuTamaño.add(jmItemTamañoPredeterminado);
@@ -430,7 +436,7 @@ public class TextEditorMain{
 		jtxtaEditor.paste();
 	}
 
-	private void jmItemCourierNewActionPerformed(ActionEvent evt){
+	private void jmItemCourierNewActionPerformed(ActionEvent evt){		
 		setFontToEditor("Courier New");
 	}
 	
