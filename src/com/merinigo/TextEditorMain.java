@@ -121,7 +121,8 @@ public class TextEditorMain{
 		frame.getContentPane().add(jtbarBarraDeHerr);
 		
 		jbtbarAbrir = new JButton("");		
-		jbtbarAbrir.addChangeListener(toolBarItemChangeListener);
+		jbtbarAbrir.addActionListener(menuBtnActionListener);
+		jbtbarAbrir.addChangeListener(menuItemChangeListener);
 		jbtbarAbrir.setFocusable(false);
 		jbtbarAbrir.setFocusPainted(false);
 		jbtbarAbrir.setMargin(new Insets(0, 0, 0, 0));
@@ -130,11 +131,8 @@ public class TextEditorMain{
 		jtbarBarraDeHerr.add(jbtbarAbrir);
 		
 		jbtbarGuardar = new JButton("");
-		jbtbarGuardar.addChangeListener(toolBarItemChangeListener);
-		jbtbarGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		jbtbarGuardar.addChangeListener(menuItemChangeListener);
+		jbtbarGuardar.addActionListener(menuBtnActionListener);
 		jbtbarGuardar.setFocusable(false);
 		jbtbarGuardar.setFocusPainted(false);
 		jbtbarGuardar.setToolTipText("Guardar");
@@ -148,11 +146,8 @@ public class TextEditorMain{
 		jtbarBarraDeHerr.add(separator);
 		
 		jbtbarCortar = new JButton("");
-		jbtbarCortar.addChangeListener(toolBarItemChangeListener);
-		jbtbarCortar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		jbtbarCortar.addChangeListener(menuItemChangeListener);
+		jbtbarCortar.addActionListener(menuBtnActionListener);
 		jbtbarCortar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Cut.png")));
 		jbtbarCortar.setToolTipText("Cortar");
 		jbtbarCortar.setMargin(new Insets(0, 0, 0, 0));
@@ -161,11 +156,8 @@ public class TextEditorMain{
 		jtbarBarraDeHerr.add(jbtbarCortar);
 		
 		jbtbarCopiar = new JButton("");
-		jbtbarCopiar.addChangeListener(toolBarItemChangeListener);
-		jbtbarCopiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		jbtbarCopiar.addChangeListener(menuItemChangeListener);
+		jbtbarCopiar.addActionListener(menuBtnActionListener);
 		jbtbarCopiar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Copy.png")));
 		jbtbarCopiar.setToolTipText("Copiar");
 		jbtbarCopiar.setMargin(new Insets(0, 0, 0, 0));
@@ -174,11 +166,8 @@ public class TextEditorMain{
 		jtbarBarraDeHerr.add(jbtbarCopiar);
 		
 		jbtnbarPegar = new JButton("");
-		jbtnbarPegar.addChangeListener(toolBarItemChangeListener);
-		jbtnbarPegar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		jbtnbarPegar.addChangeListener(menuItemChangeListener);
+		jbtnbarPegar.addActionListener(menuBtnActionListener);
 		jbtnbarPegar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Paste.png")));
 		jbtnbarPegar.setToolTipText("Pegar");
 		jbtnbarPegar.setMargin(new Insets(0, 0, 0, 0));
@@ -199,7 +188,7 @@ public class TextEditorMain{
 		jBarraDeEstado.add(jetbarestPpal);
 		
 		jscrpaneEditor = new JScrollPane();
-		jtxtaEditor = new JTextArea();		
+		jtxtaEditor = new JTextArea();
 //		jtxtaEditor.setLineWrap(true);
 //		jtxtaEditor.setWrapStyleWord(true);
 		jscrpaneEditor.setViewportView(jtxtaEditor);
@@ -216,16 +205,16 @@ public class TextEditorMain{
 		jmItemSalir = new JMenuItem("Salir");
 		jmItemSalir.addChangeListener(menuItemChangeListener);	
 		jmItemSalir.setMnemonic('S');
-		jmItemSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				jmItemSalirActionPerformed(evt);
-			}
-		});
+		jmItemSalir.addActionListener(menuBtnActionListener);
 		
 		jmItemAbrir = new JMenuItem("Abrir");
+		jmItemAbrir.addActionListener(menuBtnActionListener);
+		jmItemAbrir.addChangeListener(menuItemChangeListener);
 		jmnuArchivo.add(jmItemAbrir);
 		
 		jmItemGuardar = new JMenuItem("Guardar");
+		jmItemGuardar.addActionListener(menuBtnActionListener);
+		jmItemGuardar.addChangeListener(menuItemChangeListener);
 		jmItemGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		jmnuArchivo.add(jmItemGuardar);
 		jmnuArchivo.add(jmItemSalir);
@@ -234,16 +223,21 @@ public class TextEditorMain{
 		jmbarBarraDeMenus.add(jmnuEdicion);
 		
 		jmItemCortar = new JMenuItem("Cortar");
+		jmItemCortar.addActionListener(menuBtnActionListener);
+		jmItemCortar.addChangeListener(menuItemChangeListener);
 		jmItemCortar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCortar);
 		
 		jmItemCopiar = new JMenuItem("Copiar");
+		jmItemCopiar.addActionListener(menuBtnActionListener);
+		jmItemCopiar.addChangeListener(menuItemChangeListener);
 		jmItemCopiar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemCopiar);
 		
 		jmItemPegar = new JMenuItem("Pegar");
+		jmItemPegar.addActionListener(menuBtnActionListener);
+		jmItemPegar.addChangeListener(menuItemChangeListener);
 		jmItemPegar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
-		jmItemPegar.setMnemonic('P');
 		jmnuEdicion.add(jmItemPegar);
 		
 		jmnuOpciones = new JMenu("Opciones");
@@ -276,8 +270,10 @@ public class TextEditorMain{
 		jmnuTamaño.add(jmItemTPredeterminado);
 	}
 	
-	//----------COMMON LISTENERS
+	//                    ****************************************COMMON LISTENERS*********
+	//                    *****************************************************************
 	
+	//*************************************CHANGELISTENER items menu and toolbar
 	ChangeListener menuItemChangeListener = new ChangeListener() {		
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -286,46 +282,62 @@ public class TextEditorMain{
 			if(eventItem == jmItemSalir){
 				jmItemSalirStateChanged(e);
 			}			
-		}
-	};	
-	
-	ChangeListener toolBarItemChangeListener = new ChangeListener() {		
-		@Override
-		public void stateChanged(ChangeEvent e) {
-			Object eventItem = e.getSource();
-			
-			if(eventItem == jbtbarAbrir){				
+			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){				
 				jmItemAbrirStateChanged(e);
 			}
-			if(eventItem == jbtbarGuardar){
+			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){
 				jmItemGuardarStateChanged(e);
 			}			
-			if(eventItem == jbtbarCortar){
+			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){
 				jmItemCortarStateChanged(e);
 			}			
-			if(eventItem == jbtbarCopiar){
+			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){
 				jmItemCopiarStateChanged(e);
 			}			
-			if(eventItem == jbtnbarPegar){
+			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){				
 				jmItemPegarStateChanged(e);
 			}
 		}
 	};	
-
-
-
-	//*****************************************EVENT HANDLERS**********
-	//*****************************************************************
 	
-	//Menu Archivo Salir
-	private void jmItemSalirActionPerformed(ActionEvent evt){
-		System.exit(0);
-	}
+	//*************************************ACTIONLISTERNER items menu and toolbar
+	ActionListener menuBtnActionListener = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object eventItem = e.getSource();
+			
+			if(eventItem == jmItemSalir){
+				jmItemSalirActionPerformed(e);
+			}			
+			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){				
+				jmItemAbrirActionPerformed(e);
+			}
+			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){
+				jmItemGuardarActionPerformed(e);
+			}			
+			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){
+				jmItemCortarActionPerformed(e);
+			}			
+			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){
+				jmItemCopiarActionPerformed(e);
+			}			
+			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){				
+				jmItemPegarActionPerformed(e);
+			}
+		}
+	};
+	
+
+
+
+	//                    *****************************************EVENT HANDLERS**********
+	//                    *****************************************************************
 	
 	//Cambio de tamaño de ventana, cambiamos tamaño y posicion de barra de estado
 	private void formComponentResized(ComponentEvent evt){		
 		jBarraDeEstado.setBounds(0, frame.getSize().height-83, frame.getSize().width-14, 24);
 		jscrpaneEditor.setSize(new Dimension(frame.getSize().width-15, frame.getSize().height-101));
+		jtxtaEditor.revalidate();
 	}
 	
 	//Al abrir la ventana poner el foco en el area de texto
@@ -333,7 +345,33 @@ public class TextEditorMain{
 		jtxtaEditor.requestFocus();
 	}	
 	
-	//**************************LISTERNERs cambio estado items menu
+	//**************************ACTIONPERFORMED items menu and toolbar
+	private void jmItemSalirActionPerformed(ActionEvent evt){
+		System.exit(0);
+	}
+	
+	private void jmItemAbrirActionPerformed(ActionEvent evt){
+		System.out.println("SIN IMPLEMENTAR");
+	}
+	
+	private void jmItemGuardarActionPerformed(ActionEvent evt){
+		System.out.println("SIN IMPLEMENTAR");
+	}
+	
+	private void jmItemCortarActionPerformed(ActionEvent evt){
+		jtxtaEditor.cut();
+	}
+	
+	private void jmItemCopiarActionPerformed(ActionEvent evt){
+		jtxtaEditor.copy();
+	}
+	
+	private void jmItemPegarActionPerformed(ActionEvent evt){
+		jtxtaEditor.paste();
+	}
+	
+	
+	//**************************STATECHANGED items menu
 	private void jmItemSalirStateChanged(ChangeEvent evt){		
 		if(jetbarestPpal.getText().equals("Listo")){			
 			jetbarestPpal.setText("Cierra la aplicacion");
@@ -342,7 +380,7 @@ public class TextEditorMain{
 		}
 	}
 	
-	//**************************LISTENERs cambio estado items toolbar
+	//**************************STATECHANGED items toolbar
 	private void jmItemAbrirStateChanged(ChangeEvent evt){		
 		if(jetbarestPpal.getText().equals("Listo")){			
 			jetbarestPpal.setText("Abrir un fichero");
@@ -375,12 +413,12 @@ public class TextEditorMain{
 		}
 	}
 	
-	private void jmItemPegarStateChanged(ChangeEvent evt){		
+	private void jmItemPegarStateChanged(ChangeEvent evt){				
 		if(jetbarestPpal.getText().equals("Listo")){			
-			jetbarestPpal.setText("Pega el texto del portapapeles");
+			jetbarestPpal.setText("Pega el texto seleccionado");
 		}else{			
 			jetbarestPpal.setText("Listo");
-		}		
+		}	
 	}
 
 	
