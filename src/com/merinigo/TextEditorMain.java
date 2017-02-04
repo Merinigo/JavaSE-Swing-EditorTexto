@@ -1,5 +1,6 @@
 package com.merinigo;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -11,9 +12,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,13 +28,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -38,15 +41,16 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.undo.UndoManager;
-import java.awt.Rectangle;
-import java.awt.ComponentOrientation;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class TextEditorMain{
 
 	private Font defaultFont;
 	private UndoManager jumDeshacerRehacer;
+	
+	private JPopupMenu jpmuEdicion;
+	private JMenuItem jpmItemCortar;
+	private JMenuItem jpmItemCopiar;
+	private JMenuItem jpmItemPegar;
 	
 	private JFrame frame;
 	private JScrollPane jscrpaneEditor;
@@ -57,6 +61,8 @@ public class TextEditorMain{
 	private JMenuItem jmItemAbrir;
 	private JMenuItem jmItemSalir;
 	private JMenu jmnuEdicion;
+	private JMenuItem jmItemDeshacer;	
+	private JMenuItem jmItemRehacer;
 	private JMenuItem jmItemCortar;
 	private JMenuItem jmItemCopiar;
 	private JMenuItem jmItemPegar;
@@ -66,19 +72,22 @@ public class TextEditorMain{
 	private JCheckBoxMenuItem jmItemCourierNew;
 	private JCheckBoxMenuItem jmItemArial;
 	private JCheckBoxMenuItem jmItemFuentePredeterminada;
-	private JMenu jmnuTamaño;
+	private JMenu jmnuTamano;
 	private ButtonGroup jbgTamano;
 	private JRadioButtonMenuItem jmItem16;
 	private JRadioButtonMenuItem jmItem24;
-	private JRadioButtonMenuItem jmItemTamañoPredeterminado;
+	private JRadioButtonMenuItem jmItemTamanoPredeterminado;
 	private JToolBar jtbarBarraDeHerr;
 	private JButton jbtbarAbrir;
 	private JButton jbtbarGuardar;
 	private JButton jbtbarCortar;
 	private JButton jbtbarCopiar;
 	private JButton jbtnbarPegar;
+	private JButton jbtbarDeshacer;
+	private JButton jbtbarRehacer;
 	private JPanel jBarraDeEstado;
 	private JLabel jetbarestPpal;
+
 
 	/**
 	 * Launch the application.
@@ -132,6 +141,26 @@ public class TextEditorMain{
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		
+		jpmuEdicion = new JPopupMenu();																	//PopUpMenu
+		
+		jpmItemCortar = new JMenuItem("Cortar");
+		jpmItemCortar.addActionListener(menuItemActionListener);
+		jpmItemCortar.addChangeListener(menuItemChangeListener);
+		jpmItemCortar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));				
+		jpmuEdicion.add(jpmItemCortar);
+		   
+		jpmItemCopiar = new JMenuItem("Copiar");
+		jpmItemCopiar.addActionListener(menuItemActionListener);
+		jpmItemCopiar.addChangeListener(menuItemChangeListener);
+		jpmItemCopiar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));				
+		jpmuEdicion.add(jpmItemCopiar);
+		
+		jpmItemPegar = new JMenuItem("Pegar");
+		jpmItemPegar.addActionListener(menuItemActionListener);
+		jpmItemPegar.addChangeListener(menuItemChangeListener);
+		jpmItemPegar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));				
+		jpmuEdicion.add(jpmItemPegar);
+		
 		jtbarBarraDeHerr = new JToolBar();																//Toolbar																			
 		jtbarBarraDeHerr.setFloatable(false);
 		jtbarBarraDeHerr.setBounds(0, 0, 484, 20);
@@ -157,7 +186,7 @@ public class TextEditorMain{
 		jbtbarGuardar.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Save.png")));
 		jtbarBarraDeHerr.add(jbtbarGuardar);
 		
-		horizontalStrut = Box.createHorizontalStrut(20);
+		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut.setMaximumSize(new Dimension(5, 32767));
@@ -165,7 +194,7 @@ public class TextEditorMain{
 		
 		jtbarBarraDeHerr.add(new JToolBar.Separator());
 
-		horizontalStrut_1 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		horizontalStrut_1.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_1.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_1.setMaximumSize(new Dimension(5, 32767));
@@ -201,7 +230,7 @@ public class TextEditorMain{
 		jbtnbarPegar.setFocusPainted(false);
 		jtbarBarraDeHerr.add(jbtnbarPegar);
 		
-		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		horizontalStrut_2.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_2.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_2.setMaximumSize(new Dimension(5, 32767));
@@ -209,13 +238,14 @@ public class TextEditorMain{
 		
 		jtbarBarraDeHerr.add(new JToolBar.Separator());
 		
-		horizontalStrut_3 = Box.createHorizontalStrut(20);
+		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalStrut_3.setPreferredSize(new Dimension(5, 0));
 		horizontalStrut_3.setMinimumSize(new Dimension(5, 0));
 		horizontalStrut_3.setMaximumSize(new Dimension(5, 32767));
 		jtbarBarraDeHerr.add(horizontalStrut_3);
 		
 		jbtbarDeshacer = new JButton("");																//Toolbar_Deshacer
+		jbtbarDeshacer.addChangeListener(menuItemChangeListener);
 		jbtbarDeshacer.addActionListener(menuItemActionListener);
 		jbtbarDeshacer.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Undo.png")));
 		jbtbarDeshacer.setToolTipText("Deshacer");
@@ -225,6 +255,7 @@ public class TextEditorMain{
 		jtbarBarraDeHerr.add(jbtbarDeshacer);
 		
 		jbtbarRehacer = new JButton("");																//Toolbar_Rehacer
+		jbtbarRehacer.addChangeListener(menuItemChangeListener);
 		jbtbarRehacer.addActionListener(menuItemActionListener);
 		jbtbarRehacer.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/Redo.png")));
 		jbtbarRehacer.setToolTipText("Rehacer");
@@ -247,6 +278,12 @@ public class TextEditorMain{
 		
 		jscrpaneEditor = new JScrollPane();																//ScrollPane
 		jtxtaEditor = new JTextArea();																	//TextArea
+		jtxtaEditor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				jtxtaEditorMousePressed(e);
+			}
+		});
 //		jtxtaEditor.setLineWrap(true);
 //		jtxtaEditor.setWrapStyleWord(true);
 		jscrpaneEditor.setViewportView(jtxtaEditor);
@@ -279,23 +316,23 @@ public class TextEditorMain{
 		
 		jmnuEdicion = new JMenu("Edicion");																//MenuBar_Edicion
 		jmnuEdicion.addMenuListener(new MenuListener() {
-			public void menuSelected(MenuEvent arg0) {
-				boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
-				jmItemCopiar.setEnabled(hayTextoSeleccionado);
-				jmItemCortar.setEnabled(hayTextoSeleccionado);
+			public void menuSelected(MenuEvent e) {
+				jmnuEdicionSelected(e);
 			}
-			public void menuCanceled(MenuEvent arg0) {}
-			public void menuDeselected(MenuEvent arg0) {}
+			public void menuCanceled(MenuEvent e) {}
+			public void menuDeselected(MenuEvent e) {}
 		});
 		jmbarBarraDeMenus.add(jmnuEdicion);
 		
 		jmItemDeshacer = new JMenuItem("Deshacer");														//MenuBar_Edicion_Deshacer
+		jmItemDeshacer.addChangeListener(menuItemChangeListener);
 		jmItemDeshacer.addActionListener(menuItemActionListener);
 		jmItemDeshacer.setMnemonic('D');
 		jmItemDeshacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
 		jmnuEdicion.add(jmItemDeshacer);
 		
 		jmItemRehacer = new JMenuItem("Rehacer");														//MenuBar_Edicion_Rehacer
+		jmItemRehacer.addChangeListener(menuItemChangeListener);
 		jmItemRehacer.addActionListener(menuItemActionListener);
 		jmItemRehacer.setMnemonic('R');
 		jmItemRehacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
@@ -345,34 +382,40 @@ public class TextEditorMain{
 		jmItemFuentePredeterminada.setSelected(true);
 		jmnuFuente.add(jmItemFuentePredeterminada);
 				
-		jmnuTamaño = new JMenu("Tama\u00F1o");															//MenuBar_Opciones_Tamaño
-		jmnuTamaño.addChangeListener(menuItemChangeListener);
-		jmnuTamaño.setMnemonic('T');
-		jmnuOpciones.add(jmnuTamaño);
+		jmnuTamano = new JMenu("Tama\u00F1o");															//MenuBar_Opciones_Tamaï¿½o
+		jmnuTamano.addChangeListener(menuItemChangeListener);
+		jmnuTamano.setMnemonic('T');
+		jmnuOpciones.add(jmnuTamano);
 		
 		jbgTamano = new ButtonGroup();
 		
-		jmItem16 = new JRadioButtonMenuItem("16");														//MenuBar_Opciones_Tamaño_16
+		jmItem16 = new JRadioButtonMenuItem("16");														//MenuBar_Opciones_Tamaï¿½o_16
 		jmItem16.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem16);
-		jmnuTamaño.add(jmItem16);
+		jmnuTamano.add(jmItem16);
 		
-		jmItem24 = new JRadioButtonMenuItem("24");														//MenuBar_Opciones_Tamaño_24
+		jmItem24 = new JRadioButtonMenuItem("24");														//MenuBar_Opciones_Tamaï¿½o_24
 		jmItem24.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem24);
-		jmnuTamaño.add(jmItem24);
+		jmnuTamano.add(jmItem24);
 		
-		jmItemTamañoPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tamaño_Pred
-		jmItemTamañoPredeterminado.addActionListener(menuItemActionListener);
-		jmItemTamañoPredeterminado.setSelected(true);
-		jbgTamano.add(jmItemTamañoPredeterminado);
-		jmnuTamaño.add(jmItemTamañoPredeterminado);
+		jmItemTamanoPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tamaï¿½o_Pred
+		jmItemTamanoPredeterminado.addActionListener(menuItemActionListener);
+		jmItemTamanoPredeterminado.setSelected(true);
+		jbgTamano.add(jmItemTamanoPredeterminado);
+		jmnuTamano.add(jmItemTamanoPredeterminado);
+				
 	}
 	
-	//Iniciamos otros componentes no visuales
+	//Iniciamos otros componentes no visuales ***********************************************************DESHABILITADOS HASTA IMPLEMENTAR FUNCION
 	private void initOtherComponents(){
 		jumDeshacerRehacer = new UndoManager();
 		jtxtaEditor.getDocument().addUndoableEditListener(jumDeshacerRehacer);
+		
+		jbtbarAbrir.setEnabled(false);
+		jbtbarGuardar.setEnabled(false);
+		jmItemAbrir.setEnabled(false);
+		jmItemGuardar.setEnabled(false);
 	}
 		
 	
@@ -394,6 +437,12 @@ public class TextEditorMain{
 			if(eventItem == jmItemGuardar || eventItem == jbtbarGuardar){	//Guardar
 				jmItemGuardarStateChanged(e);
 			}			
+			if(eventItem == jmItemDeshacer||eventItem == jbtbarDeshacer){	//Deshacer				
+				jmItemDeshacerStateChanged(e);
+			}	
+			if(eventItem == jmItemRehacer||eventItem == jbtbarRehacer){		//Rehacer
+				jmItemRehacerStateChanged(e);
+			}	
 			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){		//Cortar
 				jmItemCortarStateChanged(e);
 			}			
@@ -406,8 +455,8 @@ public class TextEditorMain{
 			if(eventItem == jmnuFuente){									//Fuente
 				jmItemFuenteStateChanged(e);
 			}
-			if(eventItem == jmnuTamaño){									//Tamaño
-				jmItemTamañoStateChanged(e);
+			if(eventItem == jmnuTamano){									//Tamaï¿½o
+				jmItemTamanoStateChanged(e);
 			}
 			
 		}
@@ -434,13 +483,13 @@ public class TextEditorMain{
 			if(eventItem == jmItemRehacer||eventItem == jbtbarRehacer){		//Rehacer
 				jmItemRehacerActionPerformed(e);
 			}	
-			if(eventItem == jmItemCortar || eventItem == jbtbarCortar){		//Cortar
+			if(eventItem == jmItemCortar || eventItem == jbtbarCortar || eventItem == jpmItemCortar){		//Cortar
 				jmItemCortarActionPerformed(e);
 			}			
-			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar){		//Copiar
+			if(eventItem == jmItemCopiar || eventItem == jbtbarCopiar || eventItem == jpmItemCopiar){		//Copiar
 				jmItemCopiarActionPerformed(e);
 			}			
-			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar){		//Pegar 				
+			if(eventItem == jmItemPegar || eventItem == jbtnbarPegar || eventItem == jpmItemPegar){		//Pegar 				
 				jmItemPegarActionPerformed(e);
 			}
 			if(eventItem == jmItemCourierNew){								//CourierNew
@@ -452,34 +501,23 @@ public class TextEditorMain{
 			if(eventItem == jmItemFuentePredeterminada){					//FuentePredeterminada
 				jmItemPredeterminadaActionPerformed(e);
 			}
-			if(eventItem == jmItem16){										//Tamaño16
-				jmItemTamaño16ActionPerformed(e);
+			if(eventItem == jmItem16){										//Tamaï¿½o16
+				jmItemTamano16ActionPerformed(e);
 			}
-			if(eventItem == jmItem24){										//Tamaño24
-				jmItemTamaño24ActionPerformed(e);
+			if(eventItem == jmItem24){										//Tamaï¿½o24
+				jmItemTamano24ActionPerformed(e);
 			}
-			if(eventItem == jmItemTamañoPredeterminado){					//TamañoPredeterminado
-				jmItemTamañoPredeterminadoActionPerformed(e);
+			if(eventItem == jmItemTamanoPredeterminado){					//Tamaï¿½oPredeterminado
+				jmItemTamanoPredeterminadoActionPerformed(e);
 			}
 		}
 	};
-	private JMenuItem jmItemRehacer;
-	private JMenuItem jmItemDeshacer;
-	private JSeparator separator_1;
-	private JButton jbtbarDeshacer;
-	private JButton jbtbarRehacer;
-	private Component horizontalStrut;
-	private Component horizontalStrut_1;
-	private Component horizontalStrut_2;
-	private Component horizontalStrut_3;
-	
-	
 	
 
 	//                    *****************************************EVENT HANDLERS**********
 	//                    *****************************************************************
 	
-	//Cambio de tamaño de ventana, cambiamos tamaño y posicion de barra de estado
+	//Cambio de tamaï¿½o de ventana, cambiamos tamaï¿½o y posicion de barra de estado
 	private void formComponentResized(ComponentEvent evt){		
 		jBarraDeEstado.setBounds(0, frame.getSize().height-83, frame.getSize().width-14, 24);
 		jscrpaneEditor.setSize(new Dimension(frame.getSize().width-15, frame.getSize().height-101));
@@ -491,6 +529,24 @@ public class TextEditorMain{
 		jtxtaEditor.requestFocus();
 		defaultFont = jtxtaEditor.getFont();
 	}	
+	
+	//Inhabilita copiar y cortar si no hay texto seleccionado (barra de menus)
+	private void jmnuEdicionSelected(MenuEvent evt){
+		boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
+		jmItemCopiar.setEnabled(hayTextoSeleccionado);
+		jmItemCortar.setEnabled(hayTextoSeleccionado);
+	}
+	
+	//Inhabilita copiar y cortar si no hay texto seleccionado (menu emergente)
+	private void jtxtaEditorMousePressed(MouseEvent evt){
+		boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
+		jpmItemCopiar.setEnabled(hayTextoSeleccionado);
+		jpmItemCortar.setEnabled(hayTextoSeleccionado);
+		
+		if(evt.getButton() == MouseEvent.BUTTON3){ //Button3 para boton derecho del raton
+			jpmuEdicion.show(jtxtaEditor, evt.getX(), evt.getY());
+		}
+	}
 	
 	//-------------------------ACTIONPERFORMED items menu and toolbar
 	private void jmItemSalirActionPerformed(ActionEvent evt){
@@ -541,15 +597,15 @@ public class TextEditorMain{
 		jtxtaEditor.setFont(defaultFont);
 	}
 	
-	private void jmItemTamaño16ActionPerformed(ActionEvent evt){
+	private void jmItemTamano16ActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(16);
 	}
 	
-	private void jmItemTamaño24ActionPerformed(ActionEvent evt){
+	private void jmItemTamano24ActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(24);
 	}
 	
-	private void jmItemTamañoPredeterminadoActionPerformed(ActionEvent evt){
+	private void jmItemTamanoPredeterminadoActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(defaultFont.getSize());
 	}
 	
@@ -565,6 +621,14 @@ public class TextEditorMain{
 	
 	private void jmItemGuardarStateChanged(ChangeEvent evt){	
 		setTextInStateBarDuringHover("Guardar un fichero");
+	}
+	
+	private void jmItemDeshacerStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Deshace ultimo paso");
+	}
+	
+	private void jmItemRehacerStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Rehace ultimo paso");
 	}
 	
 	private void jmItemCortarStateChanged(ChangeEvent evt){		
@@ -583,8 +647,8 @@ public class TextEditorMain{
 		setTextInStateBarDuringHover("Cambiar la fuente de texto");
 	}
 
-	private void jmItemTamañoStateChanged(ChangeEvent evt){
-		setTextInStateBarDuringHover("Cambiar el tamaño de la fuente");		
+	private void jmItemTamanoStateChanged(ChangeEvent evt){
+		setTextInStateBarDuringHover("Cambiar el tamaï¿½o de la fuente");		
 	}		
 	
 	
