@@ -17,6 +17,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -28,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -50,6 +54,7 @@ public class TextEditorMain{
 	
 	private Font defaultFont;
 	private UndoManager jumDeshacerRehacer;
+	private FileManager jFileManager;
 	
 	private JPopupMenu jpmuEdicion;
 	private JMenuItem jpmItemCortar;
@@ -119,7 +124,7 @@ public class TextEditorMain{
 	 */
 	public TextEditorMain() {
 		initialize();	
-		initOtherComponents();
+		initOtherComponents();		
 	}
 
 	/**
@@ -412,15 +417,21 @@ public class TextEditorMain{
 				
 	}
 	
-	//Iniciamos otros componentes no visuales ***********************************************************DESHABILITADOS HASTA IMPLEMENTAR FUNCION
+	//Iniciamos otros componentes no visuales
 	private void initOtherComponents(){
 		jumDeshacerRehacer = new UndoManager();
 		jtxtaEditor.getDocument().addUndoableEditListener(jumDeshacerRehacer);
 		
-		jbtbarAbrir.setEnabled(false);
-		jbtbarGuardar.setEnabled(false);
-		jmItemAbrir.setEnabled(false);
-		jmItemGuardar.setEnabled(false);
+		jFileManager = new FileManager(new File("testData"));	
+		
+					
+		try {
+			jFileManager.loadFileToTextArea(jtxtaEditor);
+		} catch (IOException e) {
+			e.printStackTrace();		
+			JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR E/S", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 		
 	
@@ -563,7 +574,13 @@ public class TextEditorMain{
 	}
 	
 	private void jmItemGuardarActionPerformed(ActionEvent evt){
-		System.out.println("SIN IMPLEMENTAR");
+		System.out.println("IMPLEMENTANDO");
+		try {
+			jFileManager.saveFileToTextArea(jtxtaEditor);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR FICHERO NO ENCONTRADO", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void jmItemDeshacerActionPerformed(ActionEvent evt){
