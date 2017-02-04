@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -44,6 +45,9 @@ import javax.swing.undo.UndoManager;
 
 public class TextEditorMain{
 
+	private int defaultJFrameHeight = 500;
+	private int defaultJFrameWidth = 500;
+	
 	private Font defaultFont;
 	private UndoManager jumDeshacerRehacer;
 	
@@ -129,14 +133,15 @@ public class TextEditorMain{
 				formWindowOpened(e);
 			}
 		});
-		frame.setMinimumSize(new Dimension(200, 200));
 		frame.addComponentListener(new ComponentAdapter() {			
 			@Override
 			public void componentResized(ComponentEvent e) {
 				formComponentResized(e);
 			}
 		});
-		frame.setBounds(100, 100, 500, 300);
+		frame.setMinimumSize(new Dimension(300, 200));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(TextEditorMain.class.getResource("/icons/AppIcon.png")));		//AppIcon
+		frame.setBounds(0, 0, defaultJFrameWidth, defaultJFrameHeight);															
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
