@@ -72,11 +72,11 @@ public class TextEditorMain{
 	private JCheckBoxMenuItem jmItemCourierNew;
 	private JCheckBoxMenuItem jmItemArial;
 	private JCheckBoxMenuItem jmItemFuentePredeterminada;
-	private JMenu jmnuTama�o;
+	private JMenu jmnuTamano;
 	private ButtonGroup jbgTamano;
 	private JRadioButtonMenuItem jmItem16;
 	private JRadioButtonMenuItem jmItem24;
-	private JRadioButtonMenuItem jmItemTama�oPredeterminado;
+	private JRadioButtonMenuItem jmItemTamanoPredeterminado;
 	private JToolBar jtbarBarraDeHerr;
 	private JButton jbtbarAbrir;
 	private JButton jbtbarGuardar;
@@ -87,6 +87,7 @@ public class TextEditorMain{
 	private JButton jbtbarRehacer;
 	private JPanel jBarraDeEstado;
 	private JLabel jetbarestPpal;
+
 
 	/**
 	 * Launch the application.
@@ -381,28 +382,28 @@ public class TextEditorMain{
 		jmItemFuentePredeterminada.setSelected(true);
 		jmnuFuente.add(jmItemFuentePredeterminada);
 				
-		jmnuTama�o = new JMenu("Tama\u00F1o");															//MenuBar_Opciones_Tama�o
-		jmnuTama�o.addChangeListener(menuItemChangeListener);
-		jmnuTama�o.setMnemonic('T');
-		jmnuOpciones.add(jmnuTama�o);
+		jmnuTamano = new JMenu("Tama\u00F1o");															//MenuBar_Opciones_Tama�o
+		jmnuTamano.addChangeListener(menuItemChangeListener);
+		jmnuTamano.setMnemonic('T');
+		jmnuOpciones.add(jmnuTamano);
 		
 		jbgTamano = new ButtonGroup();
 		
 		jmItem16 = new JRadioButtonMenuItem("16");														//MenuBar_Opciones_Tama�o_16
 		jmItem16.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem16);
-		jmnuTama�o.add(jmItem16);
+		jmnuTamano.add(jmItem16);
 		
 		jmItem24 = new JRadioButtonMenuItem("24");														//MenuBar_Opciones_Tama�o_24
 		jmItem24.addActionListener(menuItemActionListener);
 		jbgTamano.add(jmItem24);
-		jmnuTama�o.add(jmItem24);
+		jmnuTamano.add(jmItem24);
 		
-		jmItemTama�oPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tama�o_Pred
-		jmItemTama�oPredeterminado.addActionListener(menuItemActionListener);
-		jmItemTama�oPredeterminado.setSelected(true);
-		jbgTamano.add(jmItemTama�oPredeterminado);
-		jmnuTama�o.add(jmItemTama�oPredeterminado);
+		jmItemTamanoPredeterminado = new JRadioButtonMenuItem("Predeterminado");						//MenuBar_Opciones_Tama�o_Pred
+		jmItemTamanoPredeterminado.addActionListener(menuItemActionListener);
+		jmItemTamanoPredeterminado.setSelected(true);
+		jbgTamano.add(jmItemTamanoPredeterminado);
+		jmnuTamano.add(jmItemTamanoPredeterminado);
 				
 	}
 	
@@ -454,8 +455,8 @@ public class TextEditorMain{
 			if(eventItem == jmnuFuente){									//Fuente
 				jmItemFuenteStateChanged(e);
 			}
-			if(eventItem == jmnuTama�o){									//Tama�o
-				jmItemTama�oStateChanged(e);
+			if(eventItem == jmnuTamano){									//Tama�o
+				jmItemTamanoStateChanged(e);
 			}
 			
 		}
@@ -501,26 +502,16 @@ public class TextEditorMain{
 				jmItemPredeterminadaActionPerformed(e);
 			}
 			if(eventItem == jmItem16){										//Tama�o16
-				jmItemTama�o16ActionPerformed(e);
+				jmItemTamano16ActionPerformed(e);
 			}
 			if(eventItem == jmItem24){										//Tama�o24
-				jmItemTama�o24ActionPerformed(e);
+				jmItemTamano24ActionPerformed(e);
 			}
-			if(eventItem == jmItemTama�oPredeterminado){					//Tama�oPredeterminado
-				jmItemTama�oPredeterminadoActionPerformed(e);
+			if(eventItem == jmItemTamanoPredeterminado){					//Tama�oPredeterminado
+				jmItemTamanoPredeterminadoActionPerformed(e);
 			}
 		}
 	};
-	private JMenuItem jmItemRehacer;
-	private JMenuItem jmItemDeshacer;	
-	private JButton jbtbarDeshacer;
-	private JButton jbtbarRehacer;
-	private Component horizontalStrut;
-	private Component horizontalStrut_1;
-	private Component horizontalStrut_2;
-	private Component horizontalStrut_3;
-	
-	
 	
 
 	//                    *****************************************EVENT HANDLERS**********
@@ -606,15 +597,15 @@ public class TextEditorMain{
 		jtxtaEditor.setFont(defaultFont);
 	}
 	
-	private void jmItemTama�o16ActionPerformed(ActionEvent evt){
+	private void jmItemTamano16ActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(16);
 	}
 	
-	private void jmItemTama�o24ActionPerformed(ActionEvent evt){
+	private void jmItemTamano24ActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(24);
 	}
 	
-	private void jmItemTama�oPredeterminadoActionPerformed(ActionEvent evt){
+	private void jmItemTamanoPredeterminadoActionPerformed(ActionEvent evt){
 		setFontSizeToEditor(defaultFont.getSize());
 	}
 	
@@ -656,7 +647,7 @@ public class TextEditorMain{
 		setTextInStateBarDuringHover("Cambiar la fuente de texto");
 	}
 
-	private void jmItemTama�oStateChanged(ChangeEvent evt){
+	private void jmItemTamanoStateChanged(ChangeEvent evt){
 		setTextInStateBarDuringHover("Cambiar el tama�o de la fuente");		
 	}		
 	
