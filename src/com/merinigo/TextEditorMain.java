@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -49,8 +48,7 @@ public class TextEditorMain{
 	private int defaultJFrameWidth = 500;
 	
 	private Font defaultFont;
-	private UndoManager jumDeshacerRehacer;
-	private FileManager jFileManager;
+	private UndoManager jumDeshacerRehacer;	
 	
 	private JPopupMenu jpmuEdicion;
 	private JMenuItem jpmItemCortar;
@@ -59,9 +57,10 @@ public class TextEditorMain{
 	
 	private JFrame frame;
 	private JScrollPane jscrpaneEditor;
-	private JTextArea jtxtaEditor;
+	private JMyTextArea jmytxtEditor;
 	private JMenuBar jmbarBarraDeMenus;
 	private JMenu jmnuArchivo;
+	private JMenuItem jmItemNuevo;
 	private JMenuItem jmItemGuardar;
 	private JMenuItem jmItemAbrir;
 	private JMenuItem jmItemSalir;
@@ -83,6 +82,7 @@ public class TextEditorMain{
 	private JRadioButtonMenuItem jmItem24;
 	private JRadioButtonMenuItem jmItemTamanoPredeterminado;
 	private JToolBar jtbarBarraDeHerr;
+	private JButton jbtbarNuevo;
 	private JButton jbtbarAbrir;
 	private JButton jbtbarGuardar;
 	private JButton jbtbarCortar;
@@ -175,6 +175,16 @@ public class TextEditorMain{
 		jbtbarAbrir = new JButton("");																	//Toolbar_Abrir
 		jbtbarAbrir.addActionListener(menuItemActionListener);
 		jbtbarAbrir.addChangeListener(menuItemChangeListener);
+		
+		jbtbarNuevo = new JButton("");
+		jbtbarNuevo.addChangeListener(menuItemChangeListener);
+		jbtbarNuevo.addActionListener(menuItemActionListener);
+		jbtbarNuevo.setIcon(new ImageIcon(TextEditorMain.class.getResource("/icons/New.png")));
+		jbtbarNuevo.setToolTipText("Abrir");
+		jbtbarNuevo.setMargin(new Insets(0, 0, 0, 0));
+		jbtbarNuevo.setFocusable(false);
+		jbtbarNuevo.setFocusPainted(false);
+		jtbarBarraDeHerr.add(jbtbarNuevo);
 		jbtbarAbrir.setFocusable(false);
 		jbtbarAbrir.setFocusPainted(false);
 		jbtbarAbrir.setMargin(new Insets(0, 0, 0, 0));
@@ -275,7 +285,7 @@ public class TextEditorMain{
 		fl_jBarraDeEstado.setVgap(0);
 		fl_jBarraDeEstado.setAlignment(FlowLayout.LEFT);
 		jBarraDeEstado.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		jBarraDeEstado.setBounds(0, 216, 485, 25);
+		jBarraDeEstado.setBounds(0, 416, 485, 25);
 		frame.getContentPane().add(jBarraDeEstado);
 		
 		jetbarestPpal = new JLabel("");																	//StateBar_Label
@@ -283,8 +293,8 @@ public class TextEditorMain{
 		jBarraDeEstado.add(jetbarestPpal);
 		
 		jscrpaneEditor = new JScrollPane();																//ScrollPane
-		jtxtaEditor = new JTextArea();																	//TextArea
-		jtxtaEditor.addMouseListener(new MouseAdapter() {
+		jmytxtEditor = new JMyTextArea();																	//TextArea
+		jmytxtEditor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				jtxtaEditorMousePressed(e);
@@ -292,8 +302,8 @@ public class TextEditorMain{
 		});
 //		jtxtaEditor.setLineWrap(true);
 //		jtxtaEditor.setWrapStyleWord(true);
-		jscrpaneEditor.setViewportView(jtxtaEditor);
-		jscrpaneEditor.setBounds(0, 20, 484, 198);
+		jscrpaneEditor.setViewportView(jmytxtEditor);
+		jscrpaneEditor.setBounds(0, 20, 484, 398);
 		frame.getContentPane().add(jscrpaneEditor);
 		
 		jmbarBarraDeMenus = new JMenuBar();																//MenuBar																	
@@ -311,6 +321,11 @@ public class TextEditorMain{
 		jmItemAbrir = new JMenuItem("Abrir");															//MenuBar_Archivo_Abrir
 		jmItemAbrir.addActionListener(menuItemActionListener);
 		jmItemAbrir.addChangeListener(menuItemChangeListener);
+		
+		jmItemNuevo = new JMenuItem("Nuevo");
+		jmItemNuevo.addActionListener(menuItemActionListener);
+		jmItemNuevo.addChangeListener(menuItemChangeListener);
+		jmnuArchivo.add(jmItemNuevo);
 		jmnuArchivo.add(jmItemAbrir);
 		
 		jmItemGuardar = new JMenuItem("Guardar");														//MenuBar_Archivo_Guardar															
@@ -416,9 +431,7 @@ public class TextEditorMain{
 	//Iniciamos otros componentes no visuales
 	private void initOtherComponents(){
 		jumDeshacerRehacer = new UndoManager();
-		jtxtaEditor.getDocument().addUndoableEditListener(jumDeshacerRehacer);
-		
-		jFileManager = new FileManager(jtxtaEditor);			
+		jmytxtEditor.getDocument().addUndoableEditListener(jumDeshacerRehacer);			
 	}
 		
 	
@@ -433,7 +446,10 @@ public class TextEditorMain{
 			
 			if(eventItem == jmItemSalir){
 				jmItemSalirStateChanged(e);
-			}			
+			}	
+			if(eventItem == jmItemNuevo || eventItem == jbtbarNuevo){		//Nuevo			
+				jmItemNuevoStateChanged(e);
+			}
 			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){		//Abrir			
 				jmItemAbrirStateChanged(e);
 			}
@@ -473,7 +489,10 @@ public class TextEditorMain{
 			
 			if(eventItem == jmItemSalir){
 				jmItemSalirActionPerformed(e);
-			}			
+			}	
+			if(eventItem == jmItemNuevo || eventItem == jbtbarNuevo){		//Nuevo				
+				jmItemNuevoActionPerformed(e);
+			}
 			if(eventItem == jmItemAbrir || eventItem == jbtbarAbrir){		//Abrir				
 				jmItemAbrirActionPerformed(e);
 			}
@@ -504,13 +523,13 @@ public class TextEditorMain{
 			if(eventItem == jmItemFuentePredeterminada){					//FuentePredeterminada
 				jmItemPredeterminadaActionPerformed(e);
 			}
-			if(eventItem == jmItem16){										//Tama�o16
+			if(eventItem == jmItem16){										//Tamano16
 				jmItemTamano16ActionPerformed(e);
 			}
-			if(eventItem == jmItem24){										//Tama�o24
+			if(eventItem == jmItem24){										//Tamano24
 				jmItemTamano24ActionPerformed(e);
 			}
-			if(eventItem == jmItemTamanoPredeterminado){					//Tama�oPredeterminado
+			if(eventItem == jmItemTamanoPredeterminado){					//TamanoPredeterminado
 				jmItemTamanoPredeterminadoActionPerformed(e);
 			}
 		}
@@ -522,32 +541,32 @@ public class TextEditorMain{
 	
 	//Cambio de tamano de ventana, cambiamos tamano y posicion de barra de estado
 	private void formComponentResized(ComponentEvent evt){		
-		jBarraDeEstado.setBounds(0, frame.getSize().height-83, frame.getSize().width-14, 24);
-		jscrpaneEditor.setSize(new Dimension(frame.getSize().width-15, frame.getSize().height-101));
-		jtxtaEditor.revalidate();
+		jBarraDeEstado.setBounds(0, frame.getSize().height-80, frame.getSize().width-14, 24);
+		jscrpaneEditor.setSize(new Dimension(frame.getSize().width-15, frame.getSize().height-95));
+		jmytxtEditor.revalidate();
 	}
 	
 	//Al abrir la ventana poner el foco en el area de texto
 	private void formWindowOpened(WindowEvent evt){
-		jtxtaEditor.requestFocus();
-		defaultFont = jtxtaEditor.getFont();
+		jmytxtEditor.requestFocus();
+		defaultFont = jmytxtEditor.getFont();
 	}	
 	
 	//Inhabilita copiar y cortar si no hay texto seleccionado (barra de menus)
 	private void jmnuEdicionSelected(MenuEvent evt){
-		boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
+		boolean hayTextoSeleccionado = jmytxtEditor.getSelectedText() != null;
 		jmItemCopiar.setEnabled(hayTextoSeleccionado);
 		jmItemCortar.setEnabled(hayTextoSeleccionado);
 	}
 	
 	//Inhabilita copiar y cortar si no hay texto seleccionado (menu emergente)
 	private void jtxtaEditorMousePressed(MouseEvent evt){
-		boolean hayTextoSeleccionado = jtxtaEditor.getSelectedText() != null;
+		boolean hayTextoSeleccionado = jmytxtEditor.getSelectedText() != null;
 		jpmItemCopiar.setEnabled(hayTextoSeleccionado);
 		jpmItemCortar.setEnabled(hayTextoSeleccionado);
 		
 		if(evt.getButton() == MouseEvent.BUTTON3){ //Button3 para boton derecho del raton
-			jpmuEdicion.show(jtxtaEditor, evt.getX(), evt.getY());
+			jpmuEdicion.show(jmytxtEditor, evt.getX(), evt.getY());
 		}
 	}
 	
@@ -556,12 +575,18 @@ public class TextEditorMain{
 		System.exit(0);
 	}
 	
+	private void jmItemNuevoActionPerformed(ActionEvent evt){							
+		jmytxtEditor.newFile();		
+		frame.setTitle(jmytxtEditor.getFilePath());
+	}
+	
 	private void jmItemAbrirActionPerformed(ActionEvent evt){					
-		jFileManager.openFile();
+		jmytxtEditor.openFile();
+		frame.setTitle(jmytxtEditor.getFilePath());
 	}
 	
 	private void jmItemGuardarActionPerformed(ActionEvent evt){					
-		jFileManager.saveFile();					
+		jmytxtEditor.saveFile();					
 	}
 	
 	private void jmItemDeshacerActionPerformed(ActionEvent evt){
@@ -577,15 +602,15 @@ public class TextEditorMain{
 	}
 	
 	private void jmItemCortarActionPerformed(ActionEvent evt){
-		jtxtaEditor.cut();
+		jmytxtEditor.cut();
 	}
 	
 	private void jmItemCopiarActionPerformed(ActionEvent evt){
-		jtxtaEditor.copy();
+		jmytxtEditor.copy();
 	}
 	
 	private void jmItemPegarActionPerformed(ActionEvent evt){
-		jtxtaEditor.paste();
+		jmytxtEditor.paste();
 	}
 
 	private void jmItemCourierNewActionPerformed(ActionEvent evt){		
@@ -597,7 +622,7 @@ public class TextEditorMain{
 	}
 	
 	private void jmItemPredeterminadaActionPerformed(ActionEvent evt){
-		jtxtaEditor.setFont(defaultFont);
+		jmytxtEditor.setFont(defaultFont);
 	}
 	
 	private void jmItemTamano16ActionPerformed(ActionEvent evt){
@@ -616,6 +641,10 @@ public class TextEditorMain{
 	//-------------------------STATECHANGED items menu and toolbar
 	private void jmItemSalirStateChanged(ChangeEvent evt){	
 		setTextInStateBarDuringHover("Cierra la aplicacion");
+	}
+	
+	private void jmItemNuevoStateChanged(ChangeEvent evt){	
+		setTextInStateBarDuringHover("Crear un fichero nuevo");
 	}
 	
 	private void jmItemAbrirStateChanged(ChangeEvent evt){	
@@ -651,7 +680,7 @@ public class TextEditorMain{
 	}
 
 	private void jmItemTamanoStateChanged(ChangeEvent evt){
-		setTextInStateBarDuringHover("Cambiar el tama�o de la fuente");		
+		setTextInStateBarDuringHover("Cambiar el tamano de la fuente");		
 	}		
 	
 	
@@ -667,15 +696,15 @@ public class TextEditorMain{
 	}
 	
 	private void setFontToEditor(String fontName){
-		Font oldFont = jtxtaEditor.getFont();
+		Font oldFont = jmytxtEditor.getFont();
 		Font newFont = new Font(fontName, oldFont.getStyle(), oldFont.getSize());
-		jtxtaEditor.setFont(newFont);
+		jmytxtEditor.setFont(newFont);
 	}
 	
 	private void setFontSizeToEditor(int size){		
-		Font oldSize = jtxtaEditor.getFont();
+		Font oldSize = jmytxtEditor.getFont();
 		Font newSize = new Font(oldSize.getFamily(), oldSize.getStyle(), size);
-		jtxtaEditor.setFont(newSize);
+		jmytxtEditor.setFont(newSize);
 	}
 	
 }
